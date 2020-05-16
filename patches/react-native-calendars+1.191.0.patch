@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-calendars/src/agenda/reservation-list/index.js b/node_modules/react-native-calendars/src/agenda/reservation-list/index.js
+index 8404d15..a19161e 100644
+--- a/node_modules/react-native-calendars/src/agenda/reservation-list/index.js
++++ b/node_modules/react-native-calendars/src/agenda/reservation-list/index.js
+@@ -169,7 +169,7 @@ class ReactComp extends Component {
+     }
+     const scrollPosition = reservations.length;
+     const iterator = props.selectedDay.clone();
+-    for (let i = 0; i < 31; i++) {
++    for (let i = -365; i < 365; i++) {
+       const res = this.getReservationsForDay(iterator, props);
+       if (res) {
+         reservations = reservations.concat(res);

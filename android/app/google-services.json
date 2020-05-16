@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "401014912676",
+    "firebase_url": "https://bindr-122.firebaseio.com",
+    "project_id": "bindr-122",
+    "storage_bucket": "bindr-122.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:401014912676:android:19c717ae7b11eb19",
+        "android_client_info": {
+          "package_name": "com.techrivers.bindr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "401014912676-rdmqhts4rkafh9f0kd89raok3dup4ob9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD85AOCyl2QCCzeH0ZEZYF6Is9mrTUCXbo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "401014912676-rdmqhts4rkafh9f0kd89raok3dup4ob9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "401014912676-ttonjs8jk9k59sft0ko30rair987gu30.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.usebindr.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:401014912676:android:d8fe2020c22ba24a",
+        "android_client_info": {
+          "package_name": "com.usebindr.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "401014912676-rdmqhts4rkafh9f0kd89raok3dup4ob9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD85AOCyl2QCCzeH0ZEZYF6Is9mrTUCXbo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "401014912676-rdmqhts4rkafh9f0kd89raok3dup4ob9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "401014912676-ttonjs8jk9k59sft0ko30rair987gu30.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.usebindr.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

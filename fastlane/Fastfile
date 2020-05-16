@@ -1,0 +1,147 @@
+# Customise this file, documentation can be found here:
+# https://github.com/fastlane/fastlane/tree/master/fastlane/docs
+# All available actions: https://docs.fastlane.tools/actions
+# can also be listed using the `fastlane actions` command
+
+# Change the syntax highlighting to Ruby
+# All lines starting with a # are ignored when running `fastlane`
+
+# If you want to automatically update fastlane if a new version is available:
+# update_fastlane
+
+# This is the minimum version number required.
+# Update this, if you use features of a newer version
+fastlane_version "2.30.2"
+
+default_platform :ios
+
+platform :ios do
+  before_all do
+    # ENV["SLACK_URL"] = "https://hooks.slack.com/services/..."
+    if UI.confirm("Do you want to install pods?")
+      cocoapods(podfile: 'ios/Podfile')
+    end
+    #sh "cd ..;react-native bundle --platform ios --dev false --entry-file index.js --bundle-output iOS/main.jsbundle"
+  end
+
+  desc "Runs all the tests"
+  lane :test do
+    scan
+  end
+
+  desc "Submit a new Beta Build to Apple TestFlight"
+  desc "This will also make sure the profile is up to date"
+  lane :beta do
+    options = ["Sync Code Signing, Build and Upload", "Build and Upload", "Only Upload"]
+    project = UI.select("Select steps to perform: ", options)
+    UI.success("Steps selected are '#{project}'")
+
+
+    if options.index(project) == 0
+      match(type: "appstore")    # see code signing guide for more information
+    end
+    if options.index(project) <= 1
+      increment_build_number( # Increment build No.
+         build_number: latest_testflight_build_number(version: "1.1", live: false, app_identifier: "com.usebindr.app") + 1,
+         xcodeproj: "ios/Bindr.xcodeproj"
+      )
+      gym(
+        scheme: "Bindr",
+        workspace: "./ios/Bindr.xcworkspace"
+      )
+    end
+    if options.index(project) <= 2
+      pilot
+    end
+
+    # sh "your_script.sh"
+    # You can also use other beta testing services here (run `fastlane actions`)
+  end
+
+  desc "Deploy a new version to the App Store"
+  lane :release do
+    match(type: "appstore")
+    # snapshot
+    gym(
+          scheme: "Bindr",
+          workspace: "./ios/Bindr.xcworkspace"
+        ) # Build your app - more options available
+    deliver(force: true)
+    # frameit
+  end
+
+  # You can define as many lanes as you want
+
+  after_all do |lane|
+    # This block is called, only if the executed lane was successful
+
+    # slack(
+    #   message: "Successfully deployed new App Update."
+    # )
+  end
+
+  error do |lane, exception|
+    # slack(
+    #   message: exception.message,
+    #   success: false
+    # )
+  end
+end
+
+platform :android do
+  before_all do
+    # ENV["SLACK_URL"] = "https://hooks.slack.com/services/..."
+
+    #increment_build_number # Increment build No.
+    #sh "cd ..;react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/"
+  end
+
+  desc "Submit a new Alpha Build to Google Play Store"
+  lane :alpha do
+    options = ["Bundle JS, Generate APK and Upload", "Generate APK and Upload", "Only Upload APK"]
+    project = UI.select("Select steps to perform: ", options)
+    UI.success("Steps selected are '#{project}'")
+
+
+    if options.index(project) == 0
+      sh "cd ..;react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/"
+    end
+    if options.index(project) <= 1
+      # Build the release version of the Android App
+          gradle(
+            task: "assemble",
+            build_type: "Release",
+            project_dir: "android/"
+          )
+    end
+    if options.index(project) <= 2
+      # Uploads generated apk to Google Play Store as an Alpha build
+          supply(
+            track: "alpha",
+            apk: "android/app/build/outputs/apk/release/app-release.apk",
+            skip_upload_images: true,
+            skip_upload_screenshots: true,
+            skip_upload_metadata: true
+          )
+    end
+
+  end
+
+  # You can define as many lanes as you want
+
+  after_all do |lane|
+    # This block is called, only if the executed lane was successful
+
+   # slack(
+   #   message: "App successfully released",
+   #   channel: "#myAppChannel"
+   # )
+  end
+end
+
+
+# More information about multiple platforms in fastlane: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Platforms.md
+# All available actions: https://docs.fastlane.tools/actions
+
+# fastlane reports which actions are used. No personal data is recorded.
+# Learn more at https://github.com/fastlane/fastlane#metrics
